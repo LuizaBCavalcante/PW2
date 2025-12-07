@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org">
+<head th:replace="~{fragments/head :: head(~{}, ~{::title})}">
+    <title>Detalhe de Vendas</title>
+</head>
+<main>
+<h1>Detalhes da Venda nº<span th:text="${venda.id}"></span></h1>
+<p>Data: <span th:text="${#temporals.format(venda.data, 'dd/MM/yyyy HH:mm')}"></span>
+
+<table class="table" border="1" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Quantidade</th>
+        <th>Produto</th>
+        <th>Valor Unitário</th>
+        <th>Subtotal</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr th:each="item : ${venda.itemVendas}">
+       <td th:text="${item.id}"> </td>
+       <td th:text="${item.quantidade}"> </td>
+       <td th:text="${item.produto.descricao}"> </td>
+       <td th:text="${'R$ ' + item.produto.valor}"> </td>
+       <td th:text="${'R$ ' + item.total()}"> </td>
+    </tr>
+    </tbody>
+</table>
+
+<h3>Total da Venda: <span th:text="${'R$ ' + venda.total()}"></span></h3>
+<a th:href="@{/venda/list}">Voltar para a lista</a>
+</main>
+</html>

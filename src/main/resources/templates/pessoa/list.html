@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::head}, ~{::main}, 'Lista de Clientes')}">
+<head th:replace="~{fragments/head :: head(~{}, ~{::title})}">
+    <title>Lista de Clientes</title>
+</head>
+<main>
+
+<!--<p><a th:href="@{/pessoafisica/form}">Cadastrar Novo Cliente (Pessoa Física)</a></p>-->
+<!--<p><a th:href="@{/pessoajuridica/form}">Cadastrar Novo Cliente (Pessoa Jurídica)</a></p>-->
+
+<form th:action="@{/clientes/list}" method="GET" style="margin-bottom: 20px; border: 1px solid #ccc; padding: 10px;">
+    <label for ="nome">Buscar por Nome ou Razão Social:</label>
+    <input type="text" id="nome"name="nome" th:value="${nomeFiltro}">
+    <button type="submit">Buscar</button>
+    <a th:href="@{/clientes/list}">Limpar</a> </form>
+    <table class="table" border="1" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nome/Razão Social</th>
+        <th>CPF/CNPJ</th>
+        <th>E-mail</th>
+        <th>Telefone</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:each="pessoa : ${lista_pessoas_bd}">
+        <td th:text="${pessoa.id}"> </td>
+        <td th:text="${pessoa.getNomeCliente()}"> </td>
+        <td>
+            <span th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:text="${pessoa.cpf}"></span>
+            <span th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:text="${pessoa.cnpj}"></span>
+        </td>
+        <td th:text="${pessoa.email}"> </td>
+        <td th:text="${pessoa.telefone}"> </td>
+    </tr>
+    </tbody>
+</table>
+</main>
+</html>

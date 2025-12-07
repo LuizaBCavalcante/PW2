@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::head}, ~{::main}, 'Lista de Vendas')}">
+<head th:replace="~{fragments/head :: head(~{}, ~{::title})}">
+    <title>Lista de Vendas</title>
+</head>
+<main>
+    <form th:action="@{/venda/list}" method="GET" style="margin-bottom: 20px;">
+
+        <label>Data:</label>
+        <input type="date" name="data" th:value="${dataFiltro}">
+
+        <label>Cliente:</label>
+        <select name="clienteId">
+            <option value="">Todos</option>
+            <option th:each="c : ${lista_clientes}"
+                    th:value="${c.id}"
+                    th:text="${c.getNomeCliente()}"
+                    th:selected="${c.id == clienteIdSelecionado}">
+            </option>
+        </select>
+
+        <button type="submit">Filtrar</button>
+        <a th:href="@{/venda/list}">Limpar</a>
+    </form>
+
+<table class="table" border="1" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Data</th>
+        <th>Cliente</th>
+        <th>Valor Total</th>
+        <th>Ação</th>
+   </tr>
+   </thead>
+   <tbody>
+   <tr th:each="v : ${lista_venda_bd}">
+       <td th:text="${v.id}"> </td>
+       <td th:text="${#temporals.format(v.data, 'dd/MM/yyyy HH:mm')}"> </td>
+       <td th:text="${v.cliente.nomeCliente}"> </td>
+       <td th:text="${'R$ ' + v.total()}"> </td>
+       <td><a th:href="@{/venda/detail/{id}(id=${v.id})}">Ver Detalhes</a></td>
+    </tr>
+    </tbody>
+</table>
+</main>
+</html>

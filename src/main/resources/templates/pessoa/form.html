@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+        xmlns:th="http://www.thymeleaf.org"
+        th:replace="~{fragments/layout :: layout(~{::head}, ~{::main}, 'Cadastro')}">
+
+<head th:replace="~{fragments/head :: head(~{},~{::title})}">
+
+    <title>Cadastro de Clientes</title>
+
+</head>
+<main>
+
+<form th:action="${(pessoa.id == null) ? ('/' + pessoa.nomeClasse() + '/save') : ('/' + pessoa.nomeClasse() + '/update')}"
+      th:object="${pessoa}" method="post">
+    <input type="hidden" th:field="*{id}">
+    <input type="text" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:field="*{nome}"  placeholder="Nome">
+    <input type="text" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:field="*{razaoSocial}"  placeholder="Razão Social">
+    <input type="text" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:field="*{cpf}"  placeholder="cpf">
+    <input type="text" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:field="*{cnpj}"  placeholder="cpnj">
+    <input type="text" th:field="*{email}"  placeholder="e-mail">
+    <input type="text" th:field="*{telefone}"  placeholder="telefone">
+    <input type="submit" value="Enviar" class="btn btn-primary">
+</form>
+</main>
+</html>

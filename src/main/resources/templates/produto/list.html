@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="pt-br"
+      xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::head}, ~{::main}, 'Lista de Produtos')}">
+<head th:replace="~{fragments/head :: head(~{}, ~{::title})}">
+
+    <title>Lista de Produtos</title>
+</head>
+<main>
+
+<p><a th:href="@{/produto/form}">Cadastrar Novo Produto</a></p>
+    <form th:action="@{/produto/list}" method="GET" style="margin-bottom: 20px; padding: 10px;">
+        <label for ="produto">Buscar por Nome do Produto: </label>
+        <input type="text" id="produto" name="produto" th:value="${produtoParam}">
+        <button type="submit">Filtrar por nome</button>
+    </form>
+    <form th:action="@{/produto/list}" method="GET" style="margin-bottom: 20px; padding: 10px;">
+        <label>Preço Mínimo (R$):</label>
+        <input type="number" name="valorMinimo" th:value="${valorMinimoParam}">
+        <button type="submit">Filtrar por Preço</button>
+        <a th:href="@{/produto/list}">Limpar Filtros</a>
+    </form>
+
+<table class="table" border="1" style="width: 100%">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Descrição</th>
+        <th>Valor</th>
+        <th colspan="2">Ações</th>
+    </tr>
+    </thead>
+    <main>
+    <tr th:each="p : ${lista_produtos_bd}">
+        <td th:text="${p.id}"> </td>
+        <td th:text="${p.descricao}"> </td>
+        <td th:text="${'R$ ' + p.valor}"> </td>
+        <td> <a th:href="@{/produto/edit/{id}(id=${p.id})}">Editar</a> </td>
+        <td> <a onclick="return window.confirm('Tem certeza que deseja excluir este registro?')"
+                th:href="@{/produto/remove/{id}(id=${p.id})}">Excluir</a> </td>
+    </tr>
+    </main>
+</table>
+</main>
+</html>
