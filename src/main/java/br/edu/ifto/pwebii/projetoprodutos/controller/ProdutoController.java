@@ -1,5 +1,6 @@
 package br.edu.ifto.pwebii.projetoprodutos.controller;
 
+import br.edu.ifto.pwebii.projetoprodutos.model.entity.Venda;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Produto;
@@ -16,10 +17,18 @@ public class ProdutoController {
 
     @Autowired
     ProdutoRepository produtoRepository;
+    @Autowired
+    Venda venda;
+
+    @GetMapping("/home")
+    public ModelAndView home(ModelMap model){
+        model.addAttribute("produtos", produtoRepository.produtos(null));
+        model.addAttribute("venda", venda);
+        return new ModelAndView("vitrine/index");
+    }
 
     @GetMapping("/form")
     public ModelAndView form(Produto produto){
-
         return new ModelAndView("/produto/form");
     }
 

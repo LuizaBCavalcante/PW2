@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="pt-br" xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout(~{::head}, ~{::main}, 'Mercado Virtual')}">
+<head th:replace="~{fragments/head :: head(~{}, ~{::title})}">
+    <title>Vitrine de Produtos</title>
+</head>
+<main>
+    <div class="container mt-4">
+
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h1>Produtos</h1>
+        </div>
+
+        <div class="row row-cols-1 row-cols-md-3 g-4">
+            <div class="col" th:each="p : ${produtos}">
+                <div class="card h-100 shadow-sm">
+                    <img th:src="${p.imagem != null ? p.imagem : 'https://placehold.co/600x400'}"
+                         class="card-img-top" alt="Imagem do Produto"
+                         style="height: 200px; object-fit: cover;">
+
+                    <div class="card-body">
+                        <h5 class="card-title" th:text="${p.descricao}">Nome do Produto</h5>
+                        <p class="card-text text-primary fs-4" th:text="'R$ ' + ${p.valor}">R$ 0.00</p>
+                    </div>
+
+                    <div class="card-footer bg-white border-top-0">
+                        <a th:href="@{/venda/adicionar/{id}(id=${p.id})}" class="btn btn-success w-100">
+                            Adicionar ao Carrinho
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</main>
+</html>

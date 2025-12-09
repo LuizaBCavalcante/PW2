@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 
 @Entity
 public class ItemVenda implements Serializable {
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
     private Double quantidade;
