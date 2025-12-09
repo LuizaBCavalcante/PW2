@@ -3,7 +3,9 @@ package br.edu.ifto.pwebii.projetoprodutos.model.entity;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Pessoa.Pessoa;
 import jakarta.persistence.*;
 import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
 import org.springframework.stereotype.Component;
+import org.springframework.web.context.WebApplicationContext;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -13,10 +15,10 @@ import java.util.List;
 
 @Entity
 @Component
-@Scope("session")
+@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
 public class Venda implements Serializable {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private LocalDateTime data;
 
