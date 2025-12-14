@@ -7,6 +7,7 @@ import br.edu.ifto.pwebii.projetoprodutos.model.entity.Pessoa.Pessoa;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Venda;
 import jakarta.servlet.http.HttpSession;
 import jakarta.transaction.Transactional;
+import org.hibernate.cache.spi.support.AbstractReadWriteAccess;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Produto;
 import br.edu.ifto.pwebii.projetoprodutos.model.Repository.ProdutoRepository;
@@ -42,13 +43,15 @@ public class VendaController {
 
     @GetMapping("/carrinho")
     public ModelAndView carrinho(ModelMap model) {
-        model.addAttribute("venda", venda);
         model.addAttribute("clientes", pessoaRepository.pessoas(null));
         return new ModelAndView("carrinho/lista");
     }
 
     @GetMapping("/adicionar/{id}")
-    public ModelAndView adicionarItem(@PathVariable("id") Long idProduto) {
+    public ModelAndView adicionarItem(
+            @PathVariable("id") Long idProduto,
+            @RequestParam(value="origem", required = false) String origem
+        ){
         Produto produto = produtoRepository.produto(idProduto);
 
         boolean existe = false;
@@ -68,8 +71,27 @@ public class VendaController {
             item.setVenda(venda);
             venda.getItemVendas().add(item);
         }
+        if("vitrine".equals(origem)){
+            return new ModelAndView("redirect:/produto/home");
+        }
 
         return new ModelAndView("redirect:/venda/carrinho");
+    }
+
+    @GetMapping("/diminuir/{id}")
+    public ModelAndView diminuirItem(@PathVariable("id") Long idProduto){
+        for(int i=0; i < venda.getItemVendas().size(); i++){
+            ItemVenda item = venda.getItemVendas().get(i);
+
+            if(item.getProduto().getId().equals(idProduto)){
+                if(item.getQuantidade() > 1){
+                    item.setQuantidade(item.getQuantidade() -1);
+                } else{
+                    venda.getItemVendas().remove(i);
+                }
+                break;
+            }
+        } return new ModelAndView("redirect:/venda/carrinho");
     }
 
     @GetMapping("/remove/{index}")

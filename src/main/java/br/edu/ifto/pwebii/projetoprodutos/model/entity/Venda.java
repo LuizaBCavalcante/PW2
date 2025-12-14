@@ -15,7 +15,7 @@ import java.util.List;
 
 @Entity
 @Component
-@Scope(value = WebApplicationContext.SCOPE_SESSION, proxyMode = ScopedProxyMode.TARGET_CLASS)
+@Scope("session")
 public class Venda implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,6 +36,13 @@ public class Venda implements Serializable {
             soma = soma.add(item.total());
         }
         return soma.doubleValue();
+    }
+    public Double totalItens() {
+        Double soma = 0.0;
+        for (ItemVenda item : itemVendas) {
+            soma += item.getQuantidade();
+        }
+        return soma;
     }
 
     public Long getId() {

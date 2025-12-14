@@ -5,6 +5,7 @@ import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Produto;
 import br.edu.ifto.pwebii.projetoprodutos.model.Repository.ProdutoRepository;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
@@ -17,13 +18,10 @@ public class ProdutoController {
 
     @Autowired
     ProdutoRepository produtoRepository;
-    @Autowired
-    Venda venda;
 
     @GetMapping("/home")
     public ModelAndView home(ModelMap model){
         model.addAttribute("produtos", produtoRepository.produtos(null));
-        model.addAttribute("venda", venda);
         return new ModelAndView("vitrine/index");
     }
 
