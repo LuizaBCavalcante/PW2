@@ -20,11 +20,11 @@
 
                     <div class="card-body">
                         <h5 class="card-title" th:text="${p.descricao}">Nome do Produto</h5>
-                        <p class="card-text text-primary fs-4" th:text="'R$ ' + ${p.valor}">R$ 0.00</p>
+                        <p class="card-text text-primary fs-4" th:text="'R$ ' + ${#numbers.formatDecimal(p.valor, 1, 'POINT', 2, 'COMMA')}">R$ 0.00</p>
                     </div>
 
                     <div class="card-footer bg-white border-top-0">
-                        <a th:href="@{/venda/adicionar/{id}(id=${p.id})}" class="btn btn-success w-100">
+                        <a th:href="@{/venda/adicionar/{id}(id=${p.id}, origem='vitrine')}" class="btn btn-success w-100">
                             Adicionar ao Carrinho
                         </a>
                     </div>
