@@ -2,12 +2,14 @@ package br.edu.ifto.pwebii.projetoprodutos.controller;
 
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Venda;
 import jakarta.transaction.Transactional;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import br.edu.ifto.pwebii.projetoprodutos.model.entity.Produto;
 import br.edu.ifto.pwebii.projetoprodutos.model.Repository.ProdutoRepository;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -46,9 +48,11 @@ public class ProdutoController {
         return new ModelAndView("/produto/list");
     }
 
-
     @PostMapping("/save")
-    public ModelAndView save(Produto produto){
+    public ModelAndView save(@Valid Produto produto, BindingResult result){
+        if(result.hasErrors()){
+            return new ModelAndView("/produto/form");
+        }
         produtoRepository.save(produto);
         return new ModelAndView("redirect:/produto/list");
     }
@@ -65,7 +69,10 @@ public class ProdutoController {
     }
 
     @PostMapping("/update")
-    public ModelAndView update(Produto produto) {
+    public ModelAndView update(@Valid Produto produto, BindingResult result) {
+        if(result.hasErrors()){
+            return new ModelAndView("/produto/form");
+        }
         produtoRepository.update(produto);
         return new ModelAndView("redirect:/produto/list");
     }

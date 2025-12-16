@@ -1,6 +1,8 @@
 package br.edu.ifto.pwebii.projetoprodutos.model.entity;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
@@ -11,7 +13,11 @@ public class ItemVenda implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Id
     private Long id;
+    @NotNull
+    @Min(value = 1)
     private Double quantidade;
+    @NotNull
+    @Min(value = 0)
     private BigDecimal valor;
 
     @ManyToOne
