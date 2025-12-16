@@ -18,6 +18,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -101,7 +102,18 @@ public class VendaController {
     }
 
     @PostMapping("/finalizar")
-    public ModelAndView finalizar(@RequestParam("clienteId") Long clienteId, HttpSession session) {
+    public ModelAndView finalizar(@RequestParam(value = "clienteId", required = false) Long clienteId, HttpSession session, RedirectAttributes attributes) {
+
+        if (venda.getItemVendas() == null || venda.getItemVendas().isEmpty()) {
+            attributes.addFlashAttribute("mensagemErro", "Seu carrinho está vazio. Adicione produtos antes de finalizar.");
+            return new ModelAndView("redirect:/venda/carrinho");
+        }
+
+        if (clienteId == null) {
+            attributes.addFlashAttribute("mensagemErro", "Por favor, selecione um cliente para finalizar a venda.");
+            return new ModelAndView("redirect:/venda/carrinho");
+        }
+
         Pessoa cliente = pessoaRepository.pessoa(clienteId);
 
         Venda novaVenda = new Venda();
@@ -127,6 +139,8 @@ public class VendaController {
 
         session.removeAttribute("venda");
         venda.setItemVendas(new ArrayList<>());
+
+        attributes.addFlashAttribute("mensagemSucesso", "Venda realizada com sucesso!");
 
         return new ModelAndView("redirect:/venda/list");
     }

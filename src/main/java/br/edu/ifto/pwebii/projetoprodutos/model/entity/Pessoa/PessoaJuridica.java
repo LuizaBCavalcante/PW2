@@ -2,6 +2,8 @@ package br.edu.ifto.pwebii.projetoprodutos.model.entity.Pessoa;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.PrimaryKeyJoinColumn;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
 
 import java.io.Serializable;
 
@@ -9,7 +11,11 @@ import java.io.Serializable;
 @PrimaryKeyJoinColumn(name = "id_pessoa")
 public class PessoaJuridica extends Pessoa implements Serializable {
 
-    private String razaoSocial, cnpj;
+    @NotBlank
+    private String razaoSocial;
+    @NotBlank
+    @Size(min = 14, max = 18)
+    private String cnpj;
     @Override
     public String getNomeCliente() {
         return razaoSocial;

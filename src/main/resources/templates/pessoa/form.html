@@ -8,18 +8,56 @@
     <title>Cadastro de Clientes</title>
 
 </head>
-<main>
+<main class="container mt-4">
 
-<form th:action="${(pessoa.id == null) ? ('/' + pessoa.nomeClasse() + '/save') : ('/' + pessoa.nomeClasse() + '/update')}"
-      th:object="${pessoa}" method="post">
-    <input type="hidden" th:field="*{id}">
-    <input type="text" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:field="*{nome}"  placeholder="Nome">
-    <input type="text" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:field="*{razaoSocial}"  placeholder="Razão Social">
-    <input type="text" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:field="*{cpf}"  placeholder="cpf">
-    <input type="text" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:field="*{cnpj}"  placeholder="cpnj">
-    <input type="text" th:field="*{email}"  placeholder="e-mail">
-    <input type="text" th:field="*{telefone}"  placeholder="telefone">
-    <input type="submit" value="Enviar" class="btn btn-primary">
-</form>
+   <h2 class="mb-4">Formulário de Cadastro</h2>
+    <form th:action="${(pessoa.id == null) ? ('/' + pessoa.nomeClasse() + '/save') : ('/' + pessoa.nomeClasse() + '/update')}"
+          th:object="${pessoa}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <input class="form-control mb-1" type="text" placeholder="Nome"
+               th:if="${pessoa.tipoObjeto('pessoaFisica')}"
+               th:field="*{nome}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:errors="*{nome}"></div>
+
+        <input class="form-control mb-1" type="text" placeholder="CPF"
+               th:if="${pessoa.tipoObjeto('pessoaFisica')}"
+               th:field="*{cpf}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:if="${pessoa.tipoObjeto('pessoaFisica')}" th:errors="*{cpf}"></div>
+
+
+        <input class="form-control mb-1" type="text" placeholder="Razão Social"
+               th:if="${pessoa.tipoObjeto('pessoaJuridica')}"
+               th:field="*{razaoSocial}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:errors="*{razaoSocial}"></div>
+
+        <input class="form-control mb-1" type="text" placeholder="CNPJ"
+               th:if="${pessoa.tipoObjeto('pessoaJuridica')}"
+               th:field="*{cnpj}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:if="${pessoa.tipoObjeto('pessoaJuridica')}" th:errors="*{cnpj}"></div>
+
+
+        <input class="form-control mb-1" type="text" placeholder="E-mail"
+               th:field="*{email}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:errors="*{email}"></div>
+
+        <input class="form-control mb-1" type="text" placeholder="Telefone"
+               th:field="*{telefone}"
+               th:errorclass="is-invalid">
+        <div class="invalid-feedback mb-3" th:errors="*{telefone}"></div>
+
+
+        <div class="mt-3">
+            <input type="submit" value="Enviar" class="btn btn-primary">
+            <a href="/clientes/list" class="btn btn-secondary ms-2">Cancelar</a>
+        </div>
+    </div>
+    </form>
 </main>
 </html>
