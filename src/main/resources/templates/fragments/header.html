@@ -1,3 +1,5 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <header class="container" th:fragment="header">
 
     <nav class="navbar navbar-expand-lg bg-body-tertiary">
@@ -11,7 +13,7 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Produtos (Admin)
                         </a>
@@ -22,7 +24,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item dropdown">
+                    <li class="nav-item dropdown" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Clientes
                         </a>
@@ -34,7 +36,7 @@
                         </ul>
                     </li>
 
-                    <li class="nav-item">
+                    <li class="nav-item" sec:authorize="hasRole('ADMIN')">
                         <a class="nav-link" th:href="@{/venda/list}">Histórico de Vendas</a>
                     </li>
                 </ul>
@@ -44,13 +46,23 @@
                         Carrinho
                         <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger"
                               th:text="${#numbers.formatDecimal(@venda.totalItens(), 0, 0)}"> 0
-
                         </span>
                     </a>
+                    <div sec:authorize="!isAuthenticated()">
+                        <a th:href="@{/login}" class="btn btn-primary">Entrar</a>
+                    </div>
+                    <div sec:authorize="isAuthenticated()" class="d-flex align-items-center">
+                        <span class="navbar-text me-3">
+                            Olá, <strong sec:authentication="name">User</strong>
+                        </span>
+
+                        <form th:action="@{/logout}" method="post" class="m-0">
+                            <button type="submit" class="btn btn-outline-danger btn-sm">Sair</button>
+                        </form>
+                    </div>
                 </div>
 
             </div>
         </div>
     </nav>
-
 </header>
